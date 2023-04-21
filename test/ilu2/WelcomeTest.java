@@ -24,6 +24,7 @@ class WelcomeTest {
 	void test_EX2() {
 		assertEquals("Hello, my friend", wel.welcome(""));
 		assertEquals("Hello, my friend", wel.welcome("       "));
+		assertEquals("Hello, my friend", wel.welcome(null));
 
 	}
 	
