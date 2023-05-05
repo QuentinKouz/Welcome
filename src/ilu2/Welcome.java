@@ -25,7 +25,7 @@ public class Welcome {
 	    StringBuilder upperCaseNames = new StringBuilder(". AND HELLO");
 	    String[] nameList = differentNom(names);
 	    int[] occurenceNames = occurenceNom(names,nameList);
-	    int indexUpper = 0,compteurUpper = 0, indexLower = 0,compteurLower = 0, i = 0;
+	    int indexUpper = 0, compteurUpper = 0, indexLower = 0,compteurLower = 0, i = 0;
 	    while ((i < nameList.length) && (nameList[i] != null)) {
 	        String name = nameList[i].trim();
 	        if (name.equals(name.toUpperCase())) {
@@ -39,15 +39,29 @@ public class Welcome {
 	        }
 	        i++;
 	    }
-	    return traitementAnd(compteurUpper,compteurLower,indexUpper,indexLower,sb, upperCaseNames);
+	    return traitementAndEtYoda(compteurUpper,compteurLower,indexUpper,indexLower,sb, upperCaseNames, nameList);
 	}
 
-	private static String traitementAnd(int compteurUpper,int compteurLower,int indexUpper,int indexLower, StringBuilder sb, StringBuilder upperCaseNames) {
+	private static String traitementAndEtYoda(int compteurUpper,int compteurLower,int indexUpper,int indexLower, StringBuilder sb, StringBuilder upperCaseNames, String[] nameList) {
+		boolean yodaUpper = false, yodaLower = false;
+		for (String name : nameList) {
+	    	if (name != null && yodaUpper(name))
+	    		yodaUpper = true;
+	    	if (name != null && yodaLower(name))
+	    		yodaLower = true;
+	    }
 		if (compteurUpper >1) 
 	    	upperCaseNames.replace(indexUpper, indexUpper+2, " AND ");
 	    upperCaseNames.append(" !");
-	    if (compteurLower > 1) {
+	    if (compteurLower > 1) 
 	    	sb.replace(indexLower, indexLower + 2, " and ");
+	    if (yodaUpper) {
+	    	upperCaseNames.delete(6, 13);
+	    	upperCaseNames.insert(upperCaseNames.length() -2, ", HELLO");
+	    }
+	    if (yodaLower) {
+	    	sb.delete(0, 7);
+	    	sb.append(", Hello");
 	    }
 	    if (compteurUpper > 0)
 	    	sb.append(upperCaseNames);
@@ -100,6 +114,14 @@ public class Welcome {
     	else
     		upperCaseNames.append(", " + name);
 		return upperCaseNames;
+	}
+	
+	private static boolean yodaUpper(String name) {
+		return name.equals("YODA");
+	}
+	
+	private static boolean yodaLower(String name) {
+		return name.equals("yoda");
 	}
 
 	private static String capitalize(String name) {
