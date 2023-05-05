@@ -23,24 +23,35 @@ public class Welcome {
 	
 	private static String handleMultipleNames(String[] names) {
 		StringBuilder sb = new StringBuilder("Hello");
-	    StringBuilder upperCaseNames = new StringBuilder();
-	    for (String name : names) {
-	        String trimmedName = name.trim();
-	        if (trimmedName.equals(trimmedName.toUpperCase())) {
-	            if (upperCaseNames.length() > 0) {
-	                upperCaseNames.append(", ");
-	            }
-	            upperCaseNames.append(trimmedName);
-	        } else {
-	            sb.append(", ").append(trimmedName.substring(0, 1).toUpperCase()).append(trimmedName.substring(1));
+	    StringBuilder upperCaseNames = new StringBuilder(". AND HELLO");
+	    int indexUpper = 0,compteurUpper = 0;
+	    int indexLower = 0,compteurLower = 0;
+	    for (int i = 0; i < names.length; i++) {
+	        String name = names[i].trim();
+	        if (name.equals(name.toUpperCase())) {
+	        	indexUpper = upperCaseNames.length();
+	        	compteurUpper++;
+	            upperCaseNames.append(", " + name);
+	        }else {
+	        	indexLower = sb.length();
+	        	compteurLower++;
+	        	sb.append(", " + capitalize(name));
 	        }
 	    }
-	    if (upperCaseNames.length() > 0) {
-	        sb.append(". AND HELLO, ").append(upperCaseNames).append(" !");
+	    return traitementAnd(compteurUpper,compteurLower,indexUpper,indexLower,sb, upperCaseNames);
+	}
+
+	private static String traitementAnd(int compteurUpper,int compteurLower,int indexUpper,int indexLower, StringBuilder sb, StringBuilder upperCaseNames) {
+		if (compteurUpper >1) 
+	    	upperCaseNames.replace(indexUpper, indexUpper+2, " AND ");
+	    upperCaseNames.append(" !");
+	    if (compteurLower > 1) {
+	    	sb.replace(indexLower, indexLower + 2, " and ");
 	    }
+	    if (compteurUpper > 0)
+	    	sb.append(upperCaseNames);
 	    return sb.toString();
 	}
-	
 	private static String capitalize(String name) {
 	    return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 	}
