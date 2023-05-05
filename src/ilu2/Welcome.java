@@ -1,7 +1,6 @@
 package ilu2;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Welcome {
 	
@@ -24,19 +23,21 @@ public class Welcome {
 	private static String handleMultipleNames(String[] names) {
 		StringBuilder sb = new StringBuilder("Hello");
 	    StringBuilder upperCaseNames = new StringBuilder(". AND HELLO");
-	    int indexUpper = 0,compteurUpper = 0;
-	    int indexLower = 0,compteurLower = 0;
-	    for (int i = 0; i < names.length; i++) {
-	        String name = names[i].trim();
+	    String[] nameList = differentNom(names);
+	    int[] occurenceNames = occurenceNom(names,nameList);
+	    int indexUpper = 0,compteurUpper = 0, indexLower = 0,compteurLower = 0, i = 0;
+	    while ((i < nameList.length) && (nameList[i] != null)) {
+	        String name = nameList[i].trim();
 	        if (name.equals(name.toUpperCase())) {
 	        	indexUpper = upperCaseNames.length();
 	        	compteurUpper++;
-	            upperCaseNames.append(", " + name);
+	        	salutationUpper(upperCaseNames, occurenceNames, name, i);
 	        }else {
 	        	indexLower = sb.length();
 	        	compteurLower++;
-	        	sb.append(", " + capitalize(name));
+	        	salutationLower(sb,occurenceNames,name, i);
 	        }
+	        i++;
 	    }
 	    return traitementAnd(compteurUpper,compteurLower,indexUpper,indexLower,sb, upperCaseNames);
 	}
@@ -52,6 +53,55 @@ public class Welcome {
 	    	sb.append(upperCaseNames);
 	    return sb.toString();
 	}
+	
+	private static String[] differentNom(String[] names) {
+		String[] nameList = new String[names.length];
+		int j = 0;
+		for (String name : names) {
+			boolean exists = false;
+			for (int i = 0 ; i < j ; i++) {
+				if (nameList[i].equals(name)) {
+					exists = true;
+					break;
+				}
+			}
+			if (!exists) {
+				nameList[j] = name;
+				j++;
+			}
+			
+		}
+		return nameList;
+	}
+	
+	private static int[] occurenceNom(String[] names, String[] nameList) {
+		int[] occurenceName = new int[nameList.length];
+	    for (int i = 0; i < nameList.length; i++) {
+	        for (String name : names) {
+	            if (name.equals(nameList[i])) {
+	                occurenceName[i]++;
+	            }
+	        }
+	    }
+	    return occurenceName;
+	}
+	
+	private static StringBuilder salutationLower(StringBuilder sb, int[] occurence, String name, int indice) {
+		if (occurence[indice] > 1)
+    		sb.append(", " + capitalize(name) + " (x" + occurence[indice] + ")");
+    	else
+    		sb.append(", " + capitalize(name));
+		return sb;
+	}
+	
+	private static StringBuilder salutationUpper(StringBuilder upperCaseNames, int[] occurenceNames, String name, int i) {
+		if (occurenceNames[i] > 1)
+    		upperCaseNames.append(", " + name + " (x" + occurenceNames[i] + ")");
+    	else
+    		upperCaseNames.append(", " + name);
+		return upperCaseNames;
+	}
+
 	private static String capitalize(String name) {
 	    return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 	}

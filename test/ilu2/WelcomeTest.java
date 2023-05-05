@@ -67,4 +67,13 @@ class WelcomeTest {
 		assertEquals("Hello, Bob and Amy", wel.welcome("bob     ,amy   "));
 		assertEquals("Hello, Bob and Amy", wel.welcome("     bob     ,   amy"));
 	}
+	
+	@Test
+	void test_EX9() {
+		assertEquals("Hello, Bob (x3) and Amy. AND HELLO, JERRY (x2) !", wel.welcome("bob,JERRY,amy,bob,JERRY,bob"));
+		assertEquals("Hello, Bob (x3), Amy and Pierre. AND HELLO, JERRY (x2) !", wel.welcome("bob,JERRY,amy,bob,JERRY,bob,pierre"));
+		assertEquals("Hello, Bob (x3) and Amy. AND HELLO, JERRY (x2) AND PIERRE !", wel.welcome("bob,JERRY,amy,bob,JERRY,bob, PIERRE"));
+		assertEquals("Hello, Bob (x3) and Amy. AND HELLO, JERRY (x2), BOB (x2) AND NATHAN !", wel.welcome("bob,JERRY,amy,bob,JERRY,bob, BOB, BOB, NATHAN"));
+
+	}
 }
